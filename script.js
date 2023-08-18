@@ -1,19 +1,17 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 // BANKIST APP
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'Rodrigo França',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: 'Laures Ruiz',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -61,8 +59,27 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
+const displayMovments = function (movements) {
+  movements.forEach(function (movement, index) {
+    const type = movement > 0 ? 'deposit' : 'withdrawal'
+
+
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${type}">
+        ${index + 1} ${type}
+        </div>
+      <div class="movements__value">
+        ${movement}
+      </div>
+    </div>
+    `;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+  });
+};
+displayMovments(account1.movements);
+
 // LECTURES
 
 const currencies = new Map([
@@ -74,12 +91,3 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
-
-
-//Métodos de Arrays
-// Slice
-let arr = ['a','b','c','d','e']
-
-arr.slice();
-console.log(arr)
-
