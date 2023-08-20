@@ -11,7 +11,7 @@ const account1 = {
 };
 
 const account2 = {
-  owner: 'Laures Ruiz',
+  owner: 'Lauren Ruiz',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -60,9 +60,10 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 const displayMovments = function (movements) {
-  movements.forEach(function (movement, index) {
-    const type = movement > 0 ? 'deposit' : 'withdrawal'
+  containerMovements.innerHTML = '';
 
+  movements.forEach(function (movement, index) {
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
     <div class="movements__row">
@@ -75,10 +76,25 @@ const displayMovments = function (movements) {
     </div>
     `;
 
-    containerMovements.insertAdjacentHTML('afterbegin', html)
+    containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovments(account1.movements);
+
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+console.log(accounts)
+
+console.log(createUsernames('Steven Thomas Williams'));
 
 // LECTURES
 
