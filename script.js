@@ -11,7 +11,7 @@ const account1 = {
 };
 
 const account2 = {
-  owner: 'Lauren Ruiz',
+  owner: 'Vanessa Katharine',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -59,11 +59,13 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovments = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
 
-  movements.forEach(function (movement, index) {
-    const type = movement > 0 ? 'deposit' : 'withdrawal';
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, index) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
     <div class="movements__row">
@@ -71,7 +73,7 @@ const displayMovments = function (movements) {
         ${index + 1} ${type}
         </div>
       <div class="movements__value">
-        ${movement} €
+        ${mov}€
       </div>
     </div>
     `;
@@ -121,7 +123,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   //Display movements
-  displayMovments(acc.movements);
+  displayMovements(acc.movements);
   //Display balance
   calcDisplayBalance(acc);
   //Display summary
@@ -159,7 +161,7 @@ btnLogin.addEventListener('click', e => {
 //DELETING ACCOUNTS
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
-  
+
   if (
     inputCloseUsername.value === currentAccount.username &&
     Number(inputClosePin.value) === currentAccount.pin
@@ -167,17 +169,16 @@ btnClose.addEventListener('click', function (e) {
     const index = accounts.findIndex(
       acc => acc.username === currentAccount.username
     );
-    console.log(index)
+    console.log(index);
 
     //Delete account
     accounts.splice(index, 1);
-
 
     //Hide UI
     containerApp.style.opacity = 0;
   }
   inputCloseUsername.value = inputClosePin.value = '';
-  labelWelcome.textContent = 'Account deleted sucessfully!'
+  labelWelcome.textContent = 'Account deleted sucessfully!';
 });
 
 btnTransfer.addEventListener('click', function (e) {
@@ -205,14 +206,10 @@ btnTransfer.addEventListener('click', function (e) {
 
 //Loan function
 
-
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
-  if (
-    amount > 0 &&
-    currentAccount.movements.some(mov => mov >= amount * 0.1)
-  ) {
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     //Add movement
     currentAccount.movements.push(amount);
 
@@ -222,6 +219,12 @@ btnLoan.addEventListener('click', function (e) {
   inputLoanAmount.value = '';
 });
 
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
 
 // LECTURES
 
